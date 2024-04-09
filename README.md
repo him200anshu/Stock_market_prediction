@@ -51,7 +51,7 @@ Here no need to create or train  the model in Raspberry pi it will predict the p
 
 
 
-## Color Detection Demo Video
+## Project Demo Video
 
 Watch a demo video 
 
