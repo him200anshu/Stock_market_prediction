@@ -1,0 +1,33 @@
+import pickle
+
+with open('/home/himanshu/Temp/stock.pkl','rb') as f:
+    data = pickle.load(f)
+model = data['model']
+scaler = data['scaler']
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+dataset = "/home/himanshu/Temp/archive/CIPLA.csv"
+
+df = pd.read_csv(dataset)
+df1 = df['Prev Close'].values.reshape(-1, 1)
+df1 = scaler.transform(df1)
+
+def create_dataset(dataset, time_step=100):
+    dataX, dataY = [], []
+    for i in range(len(dataset)-time_step-1):
+        a = dataset[i:(i+time_step), 0]
+        dataX.append(a)
+        dataY.append(dataset[i + time_step, 0])
+    return np.array(dataX), np.array(dataY)
+x, y = create_dataset(df1)
+
+predict = scaler.inverse_transform(model.predict(x).reshape(-1,1))
+df1 = scaler.inverse_transform(df1)
+# Plot the original data and predictions
+plt.plot(df1, color='blue', label='Original Data')
+plt.plot(predict, color='green', label='Predictions')
+plt.legend()
+plt.show()
